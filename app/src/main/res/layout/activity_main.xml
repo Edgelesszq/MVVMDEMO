@@ -1,33 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-    <androidx.constraintlayout.widget.ConstraintLayout
+<layout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+       <variable
+           name="mainVm"
+           type="com.mvvm.mvvmcarton.viewmodel.MainVM" />
+    </data>
+<androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:background="@color/white"
         android:layout_height="match_parent"
-        tools:context=".ui.activity.MainActivity">
-
-        <androidx.appcompat.widget.Toolbar
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:background="@color/color_theme"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:navigationIcon="@mipmap/icon_lefttitle"
-            app:title="电影"
-            android:theme="@style/Base.Theme.AppCompat.Light"
-            app:titleTextColor="@color/white">
-        </androidx.appcompat.widget.Toolbar>
-        <androidx.drawerlayout.widget.DrawerLayout
+        >
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:layout_marginTop="?actionBarSize"
+            android:id="@+id/drawerlayout"
             app:layout_constraintBottom_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+            <LinearLayout
+                android:background="@color/white"
+                android:layout_gravity="start"
+                android:layout_width="220dp"
+                android:layout_height="match_parent"/>
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+                <com.google.android.material.tabs.TabLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    >
+
+                </com.google.android.material.tabs.TabLayout>
                 <androidx.viewpager.widget.ViewPager
+                    android:background="@color/red"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"/>
@@ -42,20 +49,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="60dp">
                     <LinearLayout
-                        android:id="@+id/btn_comic"
+                        android:onClick="@{mainVm.onNavVideoClick}"
+                        android:id="@+id/btn_video"
                         android:orientation="vertical"
                         android:gravity="center"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="match_parent">
                         <ImageView
+                            app:imageResource="@{mainVm.videoBL?mainVm.mipmaps[0]:mainVm.mipmaps[1]}"
                             android:id="@+id/img_comic"
-                            android:src="@mipmap/video_on"
                             android:layout_width="30dp"
                             android:layout_height="30dp"/>
                         <TextView
                             android:id="@+id/tx_comic"
-                            android:textColor="@color/color_000000"
+                            android:textColor="@{mainVm.videoBL?@color/color_000000:@color/color_bfbfbf}"
                             android:layout_marginTop="5dp"
                             android:layout_gravity="center"
                             android:text="电影"
@@ -64,20 +72,21 @@
                             android:layout_height="wrap_content"/>
                     </LinearLayout>
                     <LinearLayout
-                        android:id="@+id/btn_novel"
+                        android:onClick="@{mainVm.onNavComicClick}"
+                        android:id="@+id/btn_comic"
                         android:orientation="vertical"
                         android:gravity="center"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="match_parent">
                         <ImageView
+                            app:imageResource="@{mainVm.comicBL?mainVm.mipmaps[2]:mainVm.mipmaps[3]}"
                             android:id="@+id/img_novel"
-                            android:src="@mipmap/cartoon_off"
                             android:layout_width="30dp"
                             android:layout_height="30dp"/>
                         <TextView
                             android:id="@+id/tx_novel"
-                            android:textColor="@color/color_bfbfbf"
+                            android:textColor="@{mainVm.comicBL?@color/color_000000:@color/color_bfbfbf}"
                             android:layout_marginTop="5dp"
                             android:layout_gravity="center"
                             android:text="漫画"
@@ -86,20 +95,21 @@
                             android:layout_height="wrap_content"/>
                     </LinearLayout>
                     <LinearLayout
-                        android:id="@+id/btn_video"
+                        android:onClick="@{mainVm.onNavNovelClick}"
+                        android:id="@+id/btn_novel"
                         android:orientation="vertical"
                         android:gravity="center"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="match_parent">
                         <ImageView
+                            app:imageResource="@{mainVm.novelBL?mainVm.mipmaps[4]:mainVm.mipmaps[5]}"
                             android:id="@+id/img_video"
-                            android:src="@mipmap/novel_off"
                             android:layout_width="30dp"
                             android:layout_height="30dp"/>
                         <TextView
                             android:id="@+id/tx_video"
-                            android:textColor="@color/color_bfbfbf"
+                            android:textColor="@{mainVm.novelBL?@color/color_000000:@color/color_bfbfbf}"
                             android:layout_marginTop="5dp"
                             android:layout_gravity="center"
                             android:text="小说"
@@ -109,7 +119,17 @@
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-        </androidx.drawerlayout.widget.DrawerLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.drawerlayout.widget.DrawerLayout>
+    <androidx.appcompat.widget.Toolbar
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@color/color_theme"
+        app:title="电影"
+        android:theme="@style/Base.Theme.AppCompat.Light"
+        app:titleTextColor="@color/white">
+    </androidx.appcompat.widget.Toolbar>
+</androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

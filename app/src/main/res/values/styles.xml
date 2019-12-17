@@ -12,4 +12,5 @@
         <item name="android:layout_height">0.5px</item>
         <item name="android:background">#c4c4c4</item>
     </style>
+
 </resources>
