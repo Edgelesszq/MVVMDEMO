@@ -17,10 +17,17 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ViewDataBinding;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.tabs.TabLayout;
 import com.mvvm.mvvmcarton.R;
+import com.mvvm.mvvmcarton.base.BaseFragmentAdapter;
 import com.mvvm.mvvmcarton.base.MyActivity;
 import com.mvvm.mvvmcarton.databinding.ActivityMainBinding;
+import com.mvvm.mvvmcarton.ui.fragment.CimocFragment;
+import com.mvvm.mvvmcarton.ui.fragment.NovelFragment;
+import com.mvvm.mvvmcarton.ui.fragment.VideoFragment;
 import com.mvvm.mvvmcarton.viewmodel.MainVM;
 
 
@@ -29,6 +36,9 @@ public class MainActivity extends MyActivity {
     Toolbar toolbar;
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle toggle;
+    ViewPager viewPager;
+    private BaseFragmentAdapter<Fragment> mPagerAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +65,13 @@ public class MainActivity extends MyActivity {
             }
             return false;
         });
-
+        viewPager=findViewById(R.id.viewpager);
+        mPagerAdapter=new BaseFragmentAdapter<Fragment>(this);
+        mPagerAdapter.addFragment(new VideoFragment());
+        mPagerAdapter.addFragment(new CimocFragment());
+        mPagerAdapter.addFragment(new NovelFragment());
+        viewPager.setAdapter(mPagerAdapter);
+        viewPager.setCurrentItem(0);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -63,6 +79,9 @@ public class MainActivity extends MyActivity {
         return true;
     }
 
-
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        viewPager.setAdapter(null);
+    }
 }
